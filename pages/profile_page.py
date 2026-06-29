@@ -1,6 +1,5 @@
 import allure
 
-from data import URLS
 from pages.base_page import BasePage
 from locators.profile_page_locators import ProfilePageLocators
 from locators.main_page_locators import MainPageLocators
@@ -15,7 +14,6 @@ class ProfilePage(BasePage):
         # Переходим через клик на ссылку в хедере, а не через go_to_url,
         # чтобы не потерять localStorage с токеном авторизации
         self.click_to_element_js(MainPageLocators.PROFILE_LINK)
-        # self.click_to_element(MainPageLocators.PROFILE_LINK)
         self.wait_for_url_contains("account")
 
     @allure.step("Кликаем 'История заказов'")
@@ -28,5 +26,6 @@ class ProfilePage(BasePage):
 
     @allure.step("Получаем список номеров заказов из истории")
     def get_order_numbers(self):
-        elements = self.find_elements_with_wait(ProfilePageLocators.ORDER_NUMBER_IN_HISTORY)
+        elements = self.find_elements_with_wait(
+            ProfilePageLocators.ORDER_NUMBER_IN_HISTORY)
         return [el.text for el in elements]

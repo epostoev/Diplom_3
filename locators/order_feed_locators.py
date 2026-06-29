@@ -12,8 +12,12 @@ class OrderFeedLocators:
     )
 
     # Модальное окно заказа — ищем по тексту «Cостав» внутри открытой модалки
-    ORDER_MODAL_TITLE = (By.XPATH, ".//section[contains(@class,'Modal_modal_opened')]")
-    MODAL_CLOSE_BUTTON = (By.XPATH, ".//button[contains(@class,'Modal_modal__close')]")
+    ORDER_MODAL_TITLE = (
+        By.XPATH,
+        ".//section[contains(@class,'Modal_modal_opened')]")
+    MODAL_CLOSE_BUTTON = (
+        By.XPATH,
+        ".//button[contains(@class,'Modal_modal__close')]")
 
     # Счётчики — первый «за всё время», второй «за сегодня»
     DONE_ALL_TIME_COUNTER = (

@@ -37,7 +37,8 @@ def registered_user():
         "name": UserData.NAME
     }
 
-    # Если пользователь уже существует — логинимся и удаляем, чтобы не было конфликта
+    # Если пользователь уже существует — логинимся и удаляем, чтобы не было
+    # конфликта
     login_resp = requests.post(URLS.LOGIN_API_URL, json={
         "email": UserData.EMAIL,
         "password": UserData.PASSWORD
@@ -47,7 +48,8 @@ def registered_user():
         requests.delete(URLS.USER_URL, headers={"Authorization": old_token})
 
     resp = requests.post(URLS.REGISTER_URL, json=payload)
-    assert resp.status_code == 200, f"Не удалось создать пользователя: {resp.text}"
+    assert resp.status_code == 200, f"Не удалось создать пользователя: {
+        resp.text}"
     token = resp.json().get("accessToken")
 
     yield {"email": UserData.EMAIL, "password": UserData.PASSWORD, "token": token}

@@ -20,7 +20,8 @@ class TestOrderFeed:
             "Модальное окно заказа не появилось"
 
     @allure.title("Заказы из 'Истории заказов' отображаются в 'Ленте заказов'")
-    def test_user_orders_visible_in_feed(self, logged_in_driver, registered_user):
+    def test_user_orders_visible_in_feed(
+            self, logged_in_driver, registered_user):
         # Создаём заказ
         main_page = MainPage(logged_in_driver)
         main_page.open()

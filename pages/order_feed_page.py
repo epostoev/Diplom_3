@@ -12,7 +12,6 @@ class OrderFeedPage(BasePage):
 
     @allure.step("Открываем ленту заказов")
     def open(self):
-        # go_to_url безопасен здесь — страница /feed публичная, не требует авторизации
         self.go_to_url(URLS.ORDER_FEED_URL)
         self.wait_for_element_visible(OrderFeedLocators.ORDER_ITEM)
 
@@ -38,21 +37,27 @@ class OrderFeedPage(BasePage):
 
     @allure.step("Получаем счётчик 'Выполнено за всё время'")
     def get_done_all_time_count(self):
-        return int(self.get_text_from_element(OrderFeedLocators.DONE_ALL_TIME_COUNTER))
+        return int(
+            self.get_text_from_element(
+                OrderFeedLocators.DONE_ALL_TIME_COUNTER))
 
     @allure.step("Получаем счётчик 'Выполнено за сегодня'")
     def get_done_today_count(self):
-        return int(self.get_text_from_element(OrderFeedLocators.DONE_TODAY_COUNTER))
+        return int(
+            self.get_text_from_element(
+                OrderFeedLocators.DONE_TODAY_COUNTER))
 
     @allure.step("Получаем список номеров заказов в ленте")
     def get_order_numbers_in_feed(self):
-        elements = self.find_elements_with_wait(OrderFeedLocators.ORDER_NUMBER_IN_FEED)
+        elements = self.find_elements_with_wait(
+            OrderFeedLocators.ORDER_NUMBER_IN_FEED)
         return [el.text for el in elements]
 
     @allure.step("Получаем список заказов в разделе 'В работе'")
     def get_in_progress_order_numbers(self):
         try:
-            elements = self.find_elements_with_wait(OrderFeedLocators.IN_PROGRESS_ORDER_NUMBER)
+            elements = self.find_elements_with_wait(
+                OrderFeedLocators.IN_PROGRESS_ORDER_NUMBER)
             return [el.text for el in elements]
         except Exception:
             return []

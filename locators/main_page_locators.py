@@ -2,13 +2,14 @@ from selenium.webdriver.common.by import By
 
 
 class MainPageLocators:
-    # Навигация в шапке — текст внутри <p>, кликаем на родительский <a>
     CONSTRUCTOR_LINK = (By.XPATH, ".//p[contains(text(), 'Конструктор')]/..")
     ORDER_FEED_LINK = (By.XPATH, ".//p[text()='Лента Заказов']/..")
     PROFILE_LINK = (By.XPATH, ".//p[contains(text(), 'Личный Кабинет')]/..")
 
     # Первый ингредиент в списке
-    FIRST_INGREDIENT = (By.XPATH, "(.//a[contains(@class,'BurgerIngredient_ingredient')])[1]")
+    FIRST_INGREDIENT = (
+        By.XPATH,
+        "(.//a[contains(@class,'BurgerIngredient_ingredient')])[1]")
 
     # Счётчик на первом ингредиенте
     INGREDIENT_COUNTER = (
@@ -18,8 +19,11 @@ class MainPageLocators:
     )
 
     # Модальное окно ингредиента
-    INGREDIENT_MODAL = (By.XPATH, ".//section[contains(@class,'Modal_modal__container')]")
-    INGREDIENT_MODAL_TITLE = (By.XPATH, ".//h2[contains(text(),'Детали ингредиента')]")
+    INGREDIENT_MODAL = (
+        By.XPATH,
+        ".//section[contains(@class,'Modal_modal__container')]")
+    INGREDIENT_MODAL_TITLE = (
+        By.XPATH, ".//h2[contains(text(),'Детали ингредиента')]")
     MODAL_CLOSE_BUTTON = (
         By.XPATH,
         ".//button[contains(@class,'Modal_modal__close')]"
@@ -32,7 +36,9 @@ class MainPageLocators:
     )
 
     # Модальное окно с номером заказа
-    ORDER_ID_IN_MODAL = (By.XPATH, ".//h2[contains(@class,'Modal_modal__title')]")
+    ORDER_ID_IN_MODAL = (
+        By.XPATH,
+        ".//h2[contains(@class,'Modal_modal__title')]")
 
     # Корзина конструктора
     CONSTRUCTOR_DROP_ZONE = (
@@ -41,4 +47,5 @@ class MainPageLocators:
     )
 
     # Открытая модалка (класс меняется при открытии)
-    INGREDIENT_MODAL_OPENED = (By.XPATH, ".//section[contains(@class,'Modal_modal_opened')]")
+    INGREDIENT_MODAL_OPENED = (
+        By.XPATH, ".//section[contains(@class,'Modal_modal_opened')]")

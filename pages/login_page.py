@@ -24,7 +24,8 @@ class LoginPage(BasePage):
 
     @allure.step("Нажимаем кнопку 'Войти'")
     def click_login_button(self):
-        # JS-клик обходит Modal_modal_overlay, который перекрывает кнопку в Firefox
+        # JS-клик обходит Modal_modal_overlay, который перекрывает кнопку в
+        # Firefox
         self.click_to_element_js(LoginPageLocators.LOGIN_BUTTON)
 
     @allure.step("Логинимся как {email}")

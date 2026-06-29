@@ -1,5 +1,4 @@
 import allure
-import pytest
 
 from data import URLS, UserData
 from pages.login_page import LoginPage
@@ -34,4 +33,5 @@ class TestPasswordRecovery:
         page.click_recover_button()
         page.wait_for_url_contains(URLS.RESET_PASSWORD_URL)
         page.click_show_hide_password()
-        assert page.is_password_field_active(), "Поле пароля не стало активным после клика на показать/скрыть"
+        assert page.is_password_field_active(
+        ), "Поле пароля не стало активным после клика на показать/скрыть"

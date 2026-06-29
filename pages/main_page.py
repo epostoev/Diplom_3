@@ -13,7 +13,6 @@ class MainPage(BasePage):
     @allure.step("Переходим на главную страницу")
     def open(self):
         self.go_to_url(URLS.BASE_URL)
-        # Ждём загрузки ингредиентов
         self.wait_for_element_visible(MainPageLocators.FIRST_INGREDIENT)
 
     @allure.step("Кликаем на ссылку 'Конструктор'")
@@ -38,7 +37,8 @@ class MainPage(BasePage):
 
     @allure.step("Проверяем что модальное окно ингредиента открылось")
     def is_ingredient_modal_visible(self):
-        return self.is_element_visible(MainPageLocators.INGREDIENT_MODAL_OPENED)
+        return self.is_element_visible(
+            MainPageLocators.INGREDIENT_MODAL_OPENED)
 
     @allure.step("Проверяем что заголовок 'Детали ингредиента' виден")
     def is_ingredient_modal_title_visible(self):
@@ -50,12 +50,14 @@ class MainPage(BasePage):
 
     @allure.step("Проверяем что модальное окно закрылось")
     def is_modal_closed(self):
-        return self.wait_for_element_invisible(MainPageLocators.INGREDIENT_MODAL)
+        return self.wait_for_element_invisible(
+            MainPageLocators.INGREDIENT_MODAL)
 
     @allure.step("Получаем значение счётчика первого ингредиента")
     def get_ingredient_counter(self):
         try:
-            counter = self.find_element_with_wait(MainPageLocators.INGREDIENT_COUNTER)
+            counter = self.find_element_with_wait(
+                MainPageLocators.INGREDIENT_COUNTER)
             return int(counter.text)
         except Exception:
             return 0
@@ -63,8 +65,10 @@ class MainPage(BasePage):
     @allure.step("Добавляем первый ингредиент в конструктор (drag & drop)")
     def add_first_ingredient_to_constructor(self):
         self.wait_for_overlay_to_disappear()
-        ingredient = self.driver.find_element(*MainPageLocators.FIRST_INGREDIENT)
-        drop_zone = self.driver.find_element(*MainPageLocators.CONSTRUCTOR_DROP_ZONE)
+        ingredient = self.driver.find_element(
+            *MainPageLocators.FIRST_INGREDIENT)
+        drop_zone = self.driver.find_element(
+            *MainPageLocators.CONSTRUCTOR_DROP_ZONE)
 
         # Сначала пробуем нативный drag&drop через ActionChains
         ActionChains(self.driver)\
@@ -99,8 +103,15 @@ class MainPage(BasePage):
 
     @allure.step("Получаем номер заказа из модального окна")
     def get_order_number_from_modal(self):
-        element = self.wait_for_element_visible(MainPageLocators.ORDER_ID_IN_MODAL, timeout=30)
-        return element.text
+        self.wait_for_element_visible(
+            MainPageLocators.ORDER_ID_IN_MODAL, timeout=30)
+        from selenium.webdriver.support.wait import WebDriverWait
+        WebDriverWait(
+            self.driver, 30).until(
+            lambda d: d.find_element(
+                *MainPageLocators.ORDER_ID_IN_MODAL).text != "9999")
+        return self.driver.find_element(
+            *MainPageLocators.ORDER_ID_IN_MODAL).text
 
     @allure.step("Закрываем модальное окно заказа")
     def close_order_modal(self):
