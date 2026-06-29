@@ -1,5 +1,3 @@
-import time
-
 import allure
 from selenium.webdriver.common.action_chains import ActionChains
 
@@ -15,32 +13,42 @@ class MainPage(BasePage):
     @allure.step("Переходим на главную страницу")
     def open(self):
         self.go_to_url(URLS.BASE_URL)
+        # Ждём загрузки ингредиентов
+        self.wait_for_element_visible(MainPageLocators.FIRST_INGREDIENT)
 
     @allure.step("Кликаем на ссылку 'Конструктор'")
     def click_constructor_link(self):
-        self.click_to_element(MainPageLocators.CONSTRUCTOR_LINK)
+        self.wait_for_overlay_to_disappear()
+        self.click_to_element_js(MainPageLocators.CONSTRUCTOR_LINK)
 
-    @allure.step("Кликаем на ссылку 'Лента заказов'")
+    @allure.step("Кликаем на ссылку 'Лента Заказов'")
     def click_order_feed_link(self):
-        self.click_to_element(MainPageLocators.ORDER_FEED_LINK)
+        self.wait_for_overlay_to_disappear()
+        self.click_to_element_js(MainPageLocators.ORDER_FEED_LINK)
 
     @allure.step("Кликаем на 'Личный кабинет'")
     def click_profile_link(self):
-        self.click_to_element(MainPageLocators.PROFILE_LINK)
+        self.wait_for_overlay_to_disappear()
+        self.click_to_element_js(MainPageLocators.PROFILE_LINK)
 
     @allure.step("Кликаем на первый ингредиент")
     def click_first_ingredient(self):
-        self.click_to_element(MainPageLocators.FIRST_INGREDIENT)
+        self.wait_for_overlay_to_disappear()
+        self.click_to_element_js(MainPageLocators.FIRST_INGREDIENT)
 
-    @allure.step("Проверяем, что модальное окно ингредиента открылось")
+    @allure.step("Проверяем что модальное окно ингредиента открылось")
     def is_ingredient_modal_visible(self):
+        return self.is_element_visible(MainPageLocators.INGREDIENT_MODAL_OPENED)
+
+    @allure.step("Проверяем что заголовок 'Детали ингредиента' виден")
+    def is_ingredient_modal_title_visible(self):
         return self.is_element_visible(MainPageLocators.INGREDIENT_MODAL_TITLE)
 
     @allure.step("Закрываем модальное окно крестиком")
     def close_modal(self):
-        self.click_to_element(MainPageLocators.MODAL_CLOSE_BUTTON)
+        self.click_to_element_js(MainPageLocators.MODAL_CLOSE_BUTTON)
 
-    @allure.step("Проверяем, что модальное окно закрылось")
+    @allure.step("Проверяем что модальное окно закрылось")
     def is_modal_closed(self):
         return self.wait_for_element_invisible(MainPageLocators.INGREDIENT_MODAL)
 
@@ -54,15 +62,21 @@ class MainPage(BasePage):
 
     @allure.step("Добавляем первый ингредиент в конструктор (drag & drop)")
     def add_first_ingredient_to_constructor(self):
+        self.wait_for_overlay_to_disappear()
         ingredient = self.driver.find_element(*MainPageLocators.FIRST_INGREDIENT)
         drop_zone = self.driver.find_element(*MainPageLocators.CONSTRUCTOR_DROP_ZONE)
-        actions = ActionChains(self.driver)
-        actions.drag_and_drop(ingredient, drop_zone).perform()
-        time.sleep(0.5)
+        ActionChains(self.driver)\
+            .click_and_hold(ingredient)\
+            .pause(1)\
+            .move_to_element(drop_zone)\
+            .pause(1)\
+            .release()\
+            .perform()
 
     @allure.step("Нажимаем 'Оформить заказ'")
     def click_place_order(self):
-        self.click_to_element(MainPageLocators.PLACE_ORDER_BUTTON)
+        self.wait_for_overlay_to_disappear()
+        self.click_to_element_js(MainPageLocators.PLACE_ORDER_BUTTON)
 
     @allure.step("Получаем номер заказа из модального окна")
     def get_order_number_from_modal(self):
@@ -71,4 +85,4 @@ class MainPage(BasePage):
 
     @allure.step("Закрываем модальное окно заказа")
     def close_order_modal(self):
-        self.click_to_element(MainPageLocators.ORDER_MODAL_CLOSE)
+        self.click_to_element_js(MainPageLocators.MODAL_CLOSE_BUTTON)

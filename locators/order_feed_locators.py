@@ -3,24 +3,17 @@ from selenium.webdriver.common.by import By
 
 class OrderFeedLocators:
     # Список заказов
-    ORDER_ITEM = (By.XPATH, ".//a[contains(@class,'OrderFeed_link')]")
-    ORDER_NUMBER_IN_FEED = (By.XPATH, ".//p[contains(@class,'OrderFeed_number')]")
+    ORDER_ITEM = (By.XPATH, ".//*[contains(@class,'OrderHistory_link')]")
+    ORDER_NUMBER_IN_FEED = (By.XPATH, ".//*[contains(@class,'OrderHistory_link')]//p[contains(@class,'digits')]")
 
     # Модальное окно заказа
-    ORDER_MODAL_TITLE = (
-        By.XPATH,
-        ".//section[contains(@class,'Modal_modal__container')]//h2[contains(@class,'Modal_modal__title')]"
-    )
-    MODAL_CLOSE_BUTTON = (
-        By.XPATH,
-        ".//section[contains(@class,'Modal_modal__container')]"
-        "//button[contains(@class,'Modal_modal__close')]"
-    )
+    ORDER_MODAL_TITLE = (By.XPATH, ".//*[text()='Cостав']")
+    MODAL_CLOSE_BUTTON = (By.XPATH, ".//button[contains(@class,'Modal_modal__close')]")
 
-    # Счётчики выполненных заказов
+    # Счётчики
     DONE_ALL_TIME_COUNTER = (
         By.XPATH,
-        ".//p[text()='Выполнено за всё время:']/following-sibling::p[contains(@class,'OrderFeed_number')]"
+        ".//p[text()='Выполнено за все время:']/following-sibling::p[contains(@class,'OrderFeed_number')]"
     )
     DONE_TODAY_COUNTER = (
         By.XPATH,

@@ -2,54 +2,51 @@ from selenium.webdriver.common.by import By
 
 
 class MainPageLocators:
-    # Навигация в шапке
-    CONSTRUCTOR_LINK = (By.XPATH, ".//a[text()='Конструктор']")
-    ORDER_FEED_LINK = (By.XPATH, ".//a[text()='Лента заказов']")
-    PROFILE_LINK = (By.XPATH, ".//a[contains(@href, '/account')]")
+    # Навигация в шапке — текст внутри <p>, кликаем на родительский <a>
+    CONSTRUCTOR_LINK = (By.XPATH, ".//p[contains(text(), 'Конструктор')]/..")
+    ORDER_FEED_LINK = (By.XPATH, ".//p[text()='Лента Заказов']/..")
+    PROFILE_LINK = (By.XPATH, ".//p[contains(text(), 'Личный Кабинет')]/..")
 
-    # Конструктор — секции
-    BUNS_SECTION = (By.XPATH, ".//span[text()='Булки']")
-    SAUCES_SECTION = (By.XPATH, ".//span[text()='Соусы']")
-    FILLINGS_SECTION = (By.XPATH, ".//span[text()='Начинки']")
-
-    # Первый ингредиент в списке (булка)
+    # Первый ингредиент в списке
     FIRST_INGREDIENT = (By.XPATH, "(.//a[contains(@class,'BurgerIngredient_ingredient')])[1]")
 
-    # Счётчик на ингредиенте
+    # Счётчик на первом ингредиенте
     INGREDIENT_COUNTER = (
         By.XPATH,
-        "(.//a[contains(@class,'BurgerIngredient_ingredient')])[1]//"
-        "p[contains(@class,'counter_counter__num')]"
+        "(.//a[contains(@class,'BurgerIngredient_ingredient')])[1]"
+        "//p[contains(@class,'counter_counter__num')]"
     )
 
     # Модальное окно ингредиента
     INGREDIENT_MODAL = (By.XPATH, ".//section[contains(@class,'Modal_modal__container')]")
     INGREDIENT_MODAL_TITLE = (
         By.XPATH,
-        ".//section[contains(@class,'Modal_modal__container')]//h3[text()='Детали ингредиента']"
+        ".//section[contains(@class,'Modal_modal__container')]"
+        "//h3[text()='Детали ингредиента']"
     )
     MODAL_CLOSE_BUTTON = (
         By.XPATH,
-        ".//section[contains(@class,'Modal_modal__container')]"
-        "//button[contains(@class,'Modal_modal__close')]"
+        ".//button[contains(@class,'Modal_modal__close')]"
     )
 
     # Кнопка оформить заказ
     PLACE_ORDER_BUTTON = (
         By.XPATH,
-        ".//button[contains(@class,'Button_button') and text()='Оформить заказ']"
+        ".//button[contains(@class,'button_button__33qZ0') and text()='Оформить заказ']"
     )
 
     # Модальное окно с номером заказа
     ORDER_ID_IN_MODAL = (
         By.XPATH,
-        ".//section[contains(@class,'Modal_modal__container')]//h2[contains(@class,'Modal_modal__title')]"
-    )
-    ORDER_MODAL_CLOSE = (
-        By.XPATH,
         ".//section[contains(@class,'Modal_modal__container')]"
-        "//button[contains(@class,'Modal_modal__close')]"
+        "//h2[contains(@class,'Modal_modal__title')]"
     )
 
     # Корзина конструктора
-    CONSTRUCTOR_DROP_ZONE = (By.XPATH, ".//ul[contains(@class,'BurgerConstructor_basket__list')]")
+    CONSTRUCTOR_DROP_ZONE = (
+        By.XPATH,
+        ".//ul[contains(@class,'BurgerConstructor_basket__list')]"
+    )
+
+    # Открытая модалка (класс меняется при открытии)
+    INGREDIENT_MODAL_OPENED = (By.XPATH, ".//section[contains(@class,'Modal_modal_opened')]")

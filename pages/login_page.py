@@ -35,9 +35,6 @@ class LoginPage(BasePage):
         WebDriverWait(self.driver, 15).until(
             lambda d: "/login" not in d.current_url
         )
-        print(f"\nURL после логина: {self.driver.current_url}")
-        print(f"localStorage: {self.driver.execute_script('return JSON.stringify(localStorage)')}")
-        print(f"Cookies: {self.driver.get_cookies()}")
 
     @allure.step("Кликаем на 'Восстановить пароль'")
     def click_forgot_password(self):

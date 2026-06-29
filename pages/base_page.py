@@ -1,29 +1,16 @@
 import allure
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
 class BasePage:
+    OVERLAY = (By.XPATH, ".//div[contains(@class,'Modal_modal_overlay')]")
+
     def __init__(self, driver):
         self.driver = driver
         self.timeout = 10
         self.wait = WebDriverWait(self.driver, self.timeout)
-
-    # def wait_for_element_invisible(self, locator, timeout=5):
-    #     return WebDriverWait(self.driver, timeout).until(
-    #         EC.invisibility_of_element_located(locator)
-    #     )
-    
-    def wait_for_element_invisible(self, locator, timeout=5):
-        """Ожидает, пока элемент исчезнет из DOM или станет невидимым."""
-        return WebDriverWait(self.driver, timeout).until(
-            EC.invisibility_of_element_located(locator)
-        )
-    
-    def click_to_element_js(self, locator):
-        """Кликает по элементу с помощью JavaScript (игнорирует оверлеи)."""
-        element = self.driver.find_element(*locator)
-        self.driver.execute_script("arguments[0].click();", element)
 
     def go_to_url(self, url):
         self.driver.get(url)
@@ -41,6 +28,23 @@ class BasePage:
         self.wait.until(EC.element_to_be_clickable(locator))
         self.driver.find_element(*locator).click()
 
+    @allure.step("JS-клик по элементу")
+    def click_to_element_js(self, locator):
+        """Ждёт появления элемента, затем кликает через JS.
+        Обходит Modal_modal_overlay и другие перекрывающие элементы."""
+        self.wait.until(EC.presence_of_element_located(locator))
+        element = self.driver.find_element(*locator)
+        self.driver.execute_script("arguments[0].click();", element)
+
+    def wait_for_overlay_to_disappear(self, timeout=5):
+        """Ждём пока оверлей исчезнет. Не падаем если его нет."""
+        try:
+            WebDriverWait(self.driver, timeout).until(
+                EC.invisibility_of_element_located(self.OVERLAY)
+            )
+        except Exception:
+            pass
+
     def add_text_to_element(self, locator, text):
         self.find_element_with_wait(locator).send_keys(text)
 
@@ -49,6 +53,9 @@ class BasePage:
 
     def get_current_url(self):
         return self.driver.current_url
+
+    def get_element_attribute(self, locator, attribute):
+        return self.find_element_with_wait(locator).get_attribute(attribute)
 
     @allure.step("Прокручиваем страницу до элемента")
     def scroll_to_element(self, locator):
@@ -77,20 +84,6 @@ class BasePage:
             return True
         except Exception:
             return False
-
-    def get_element_attribute(self, locator, attribute):
-        return self.find_element_with_wait(locator).get_attribute(attribute)
-
-    @allure.step("Ждём открытия новой вкладки")
-    def wait_for_new_window(self, expected_count):
-        WebDriverWait(self.driver, 10).until(
-            EC.number_of_windows_to_be(expected_count)
-        )
-
-    @allure.step("Переключаемся на новую вкладку")
-    def switch_to_another_window(self):
-        windows_list = self.driver.window_handles
-        self.driver.switch_to.window(windows_list[-1])
 
     def format_locator(self, locator, value):
         method, xpath = locator
