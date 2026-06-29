@@ -2,26 +2,32 @@ from selenium.webdriver.common.by import By
 
 
 class OrderFeedLocators:
-    # Список заказов
+    # Карточка заказа в ленте
     ORDER_ITEM = (By.XPATH, ".//*[contains(@class,'OrderHistory_link')]")
-    ORDER_NUMBER_IN_FEED = (By.XPATH, ".//*[contains(@class,'OrderHistory_link')]//p[contains(@class,'digits')]")
 
-    # Модальное окно заказа
-    ORDER_MODAL_TITLE = (By.XPATH, ".//*[text()='Cостав']")
+    # Номер заказа в карточке ленты
+    ORDER_NUMBER_IN_FEED = (
+        By.XPATH,
+        ".//*[contains(@class,'OrderHistory_link')]//p[contains(@class,'text_type_digits-default')]"
+    )
+
+    # Модальное окно заказа — ищем по тексту «Cостав» внутри открытой модалки
+    ORDER_MODAL_TITLE = (By.XPATH, ".//section[contains(@class,'Modal_modal_opened')]")
     MODAL_CLOSE_BUTTON = (By.XPATH, ".//button[contains(@class,'Modal_modal__close')]")
 
-    # Счётчики
+    # Счётчики — первый «за всё время», второй «за сегодня»
     DONE_ALL_TIME_COUNTER = (
         By.XPATH,
-        ".//p[text()='Выполнено за все время:']/following-sibling::p[contains(@class,'OrderFeed_number')]"
+        "(.//p[contains(@class,'OrderFeed_number')])[1]"
     )
     DONE_TODAY_COUNTER = (
         By.XPATH,
-        ".//p[text()='Выполнено за сегодня:']/following-sibling::p[contains(@class,'OrderFeed_number')]"
+        "(.//p[contains(@class,'OrderFeed_number')])[2]"
     )
 
-    # Раздел «В работе»
+    # Раздел «В работе» — li с номерами заказов
     IN_PROGRESS_ORDER_NUMBER = (
         By.XPATH,
-        ".//ul[contains(@class,'OrderFeed_orderListReady')]//li"
+        ".//ul[contains(@class,'OrderFeed_orderList')]"
+        "//li[contains(@class,'text_type_digits-default')]"
     )

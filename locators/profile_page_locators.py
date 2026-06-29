@@ -6,5 +6,8 @@ class ProfilePageLocators:
     ORDER_HISTORY_LINK = (By.XPATH, ".//a[text()='История заказов']")
     LOGOUT_BUTTON = (By.XPATH, ".//button[text()='Выход']")
 
-    # Список заказов в истории
-    ORDER_NUMBER_IN_HISTORY = (By.XPATH, ".//p[contains(@class,'OrderHistory_number')]")
+    # Номер заказа в истории — формат #011230
+    ORDER_NUMBER_IN_HISTORY = (
+        By.XPATH,
+        ".//p[contains(@class,'text_type_digits-default')]"
+    )

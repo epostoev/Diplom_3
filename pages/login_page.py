@@ -24,6 +24,7 @@ class LoginPage(BasePage):
 
     @allure.step("Нажимаем кнопку 'Войти'")
     def click_login_button(self):
+        # JS-клик обходит Modal_modal_overlay, который перекрывает кнопку в Firefox
         self.click_to_element_js(LoginPageLocators.LOGIN_BUTTON)
 
     @allure.step("Логинимся как {email}")
@@ -32,10 +33,12 @@ class LoginPage(BasePage):
         self.enter_email(email)
         self.enter_password(password)
         self.click_login_button()
+        # Ждём пока URL перестанет содержать /login — значит редирект прошёл
         WebDriverWait(self.driver, 15).until(
             lambda d: "/login" not in d.current_url
         )
 
     @allure.step("Кликаем на 'Восстановить пароль'")
     def click_forgot_password(self):
+        # JS-клик обходит Modal_modal_overlay в Firefox
         self.click_to_element_js(LoginPageLocators.FORGOT_PASSWORD_LINK)
