@@ -19,11 +19,7 @@ class MainPageLocators:
 
     # Модальное окно ингредиента
     INGREDIENT_MODAL = (By.XPATH, ".//section[contains(@class,'Modal_modal__container')]")
-    INGREDIENT_MODAL_TITLE = (
-        By.XPATH,
-        ".//section[contains(@class,'Modal_modal__container')]"
-        "//h3[text()='Детали ингредиента']"
-    )
+    INGREDIENT_MODAL_TITLE = (By.XPATH, ".//h2[contains(text(),'Детали ингредиента')]")
     MODAL_CLOSE_BUTTON = (
         By.XPATH,
         ".//button[contains(@class,'Modal_modal__close')]"
@@ -36,11 +32,7 @@ class MainPageLocators:
     )
 
     # Модальное окно с номером заказа
-    ORDER_ID_IN_MODAL = (
-        By.XPATH,
-        ".//section[contains(@class,'Modal_modal__container')]"
-        "//h2[contains(@class,'Modal_modal__title')]"
-    )
+    ORDER_ID_IN_MODAL = (By.XPATH, ".//h2[contains(@class,'Modal_modal__title')]")
 
     # Корзина конструктора
     CONSTRUCTOR_DROP_ZONE = (

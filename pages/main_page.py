@@ -65,6 +65,8 @@ class MainPage(BasePage):
         self.wait_for_overlay_to_disappear()
         ingredient = self.driver.find_element(*MainPageLocators.FIRST_INGREDIENT)
         drop_zone = self.driver.find_element(*MainPageLocators.CONSTRUCTOR_DROP_ZONE)
+
+        # Сначала пробуем нативный drag&drop через ActionChains
         ActionChains(self.driver)\
             .click_and_hold(ingredient)\
             .pause(1)\
@@ -72,6 +74,23 @@ class MainPage(BasePage):
             .pause(1)\
             .release()\
             .perform()
+
+        # Если счётчик не изменился (Firefox не поддерживает нативный DnD для React),
+        # эмулируем через JS события
+        import time
+        time.sleep(0.5)
+        counter = self.get_ingredient_counter()
+        if counter == 0:
+            self.driver.execute_script("""
+                function simulateDnD(src, dst) {
+                    const dt = new DataTransfer();
+                    src.dispatchEvent(new DragEvent('dragstart', {bubbles:true, dataTransfer:dt}));
+                    dst.dispatchEvent(new DragEvent('dragover', {bubbles:true, dataTransfer:dt}));
+                    dst.dispatchEvent(new DragEvent('drop', {bubbles:true, dataTransfer:dt}));
+                    src.dispatchEvent(new DragEvent('dragend', {bubbles:true, dataTransfer:dt}));
+                }
+                simulateDnD(arguments[0], arguments[1]);
+            """, ingredient, drop_zone)
 
     @allure.step("Нажимаем 'Оформить заказ'")
     def click_place_order(self):

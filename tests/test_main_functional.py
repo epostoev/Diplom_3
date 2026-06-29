@@ -53,12 +53,12 @@ class TestMainFunctionality:
         assert counter_after > counter_before, \
             f"Счётчик не увеличился: было {counter_before}, стало {counter_after}"
 
-    # @allure.title("Залогиненный пользователь может оформить заказ")
-    # def test_logged_in_user_can_place_order(self, logged_in_driver):
-    #     main_page = MainPage(logged_in_driver)
-    #     main_page.open()
-    #     main_page.add_first_ingredient_to_constructor()
-    #     main_page.click_place_order()
-    #     order_number = main_page.get_order_number_from_modal()
-    #     assert order_number.isdigit(), \
-    #         f"Номер заказа не получен или не является числом: '{order_number}'"
+    @allure.title("Залогиненный пользователь может оформить заказ")
+    def test_logged_in_user_can_place_order(self, logged_in_driver):
+        main_page = MainPage(logged_in_driver)
+        main_page.open()
+        main_page.add_first_ingredient_to_constructor()
+        main_page.click_place_order()
+        order_number = main_page.get_order_number_from_modal()
+        assert order_number.isdigit(), \
+            f"Номер заказа не получен или не является числом: '{order_number}'"
