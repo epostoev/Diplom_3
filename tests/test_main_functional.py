@@ -16,7 +16,7 @@ class TestMainFunctionality:
         main_page = MainPage(driver)
         main_page.click_constructor_link()
         main_page.wait_for_url_contains(URLS.BASE_URL)
-        assert driver.current_url == URLS.BASE_URL
+        assert main_page.get_current_url() == URLS.BASE_URL
 
     @allure.title("Переход в 'Ленту Заказов' по клику на ссылку")
     def test_navigate_to_order_feed(self, driver):
@@ -24,7 +24,7 @@ class TestMainFunctionality:
         main_page.open()
         main_page.click_order_feed_link()
         main_page.wait_for_url_contains(URLS.ORDER_FEED_URL)
-        assert URLS.ORDER_FEED_URL in driver.current_url
+        assert URLS.ORDER_FEED_URL in main_page.get_current_url()
 
     @allure.title("Клик на ингредиент открывает всплывающее окно с деталями")
     def test_click_ingredient_opens_modal(self, driver):
